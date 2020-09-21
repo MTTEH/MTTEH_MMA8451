@@ -14,93 +14,74 @@
 
 #include "MTTEH_MMA8451.hpp"
 
-Adafruit_MMA8451 mma_gyroaccel_sensor = Adafruit_MMA8451();
-sensors_event_t mma_gyroaccel_event;
-
-void init()
+void MMA8451::init()
 {
     //check_serial();
-
+    _sensor = Adafruit_MMA8451();
     Serial.println("MMA8451 Initialization !");
 
-    if (!mma_gyroaccel_sensor.begin()) {
+    if (!_sensor.begin()) {
         Serial.println("MMA8451 Initialisation Failed !");
         Serial.println("Program died !");
         program_died();
     }
     Serial.println("MMA8451 Connected!");
-    mma_gyroaccel_sensor.setRange(MMA8451_RANGE_2_G);
+    _sensor.setRange(MMA8451_RANGE_2_G);
     Serial.print("Range = ");
-    Serial.print(2 << mma_gyroaccel_sensor.getRange());
+    Serial.print(2 << _sensor.getRange());
     Serial.println("G");
 }
 
-void read()
+void MMA8451::read()
 {
-    mma_gyroaccel_sensor.read();
+    _sensor.read();
 }
 
-void print_X()
+void MMA8451::Print::X()
 {
     Serial.print("X: ");
-    Serial.println(mma_gyroaccel_sensor.x);
+    Serial.println(_sensor.x);
 }
 
-void print_Y()
+void MMA8451::Print::Y()
 {
     Serial.print("Y: ");
-    Serial.println(mma_gyroaccel_sensor.y);
+    Serial.println(_sensor.y);
 }
 
-void print_Z()
+void MMA8451::Print::Z()
 {
     Serial.print("Z: ");
-    Serial.println(mma_gyroaccel_sensor.z);
+    Serial.println(_sensor.z);
 }
 
-void print_all()
+bool MMA8451::get_event()
 {
-    print_X();
-    print_Y();
-    print_Z();
-    Serial.println("");
+    return _sensor.getEvent(&_event);
 }
 
-void get_event()
-{
-    mma_gyroaccel_sensor.getEvent(&mma_gyroaccel_event);
-}
-
-void print_X_event()
+void MMA8451::Event::Print::X()
 {
     Serial.print("X: ");
-    Serial.print(mma_gyroaccel_event.acceleration.x);
+    Serial.print(_event.acceleration.x);
     Serial.println("m/s^2");
 }
 
-void print_Y_event()
+void MMA8451::Event::Print::Y()
 {
     Serial.print("Y: ");
-    Serial.print(mma_gyroaccel_event.acceleration.y);
+    Serial.print(_event.acceleration.y);
     Serial.println("m/s^2");
 }
 
-void print_Z_event()
+void MMA8451::Event::Print::Z()
 {
     Serial.print("Z: ");
-    Serial.print(mma_gyroaccel_event.acceleration.z);
+    Serial.print(_event.acceleration.z);
     Serial.println("m/s^2");
 }
 
-void print_all_event()
+uint8_t MMA8451::get_orientation()
 {
-    print_X_event();
-    print_Y_event();
-    print_Z_event();
-    Serial.println("");
-}
-
-uint8_t get_orientation()
-{
-    return mma_gyroaccel_sensor.getOrientation();
+    return _sensor.getOrientation();
 }
