@@ -10,4 +10,5 @@ Now this lib is useless for main project, but will stay alive ! As archived proj
 I would like prefer to separate my files inside the Arduino lib, but... And making a new lib for that is.... You know, right ?
 
 GGLinnk
+
 End of transmission...
